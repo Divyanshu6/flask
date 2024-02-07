@@ -66,4 +66,4 @@ jobs:
         with:
           app-name: 'pywebappyash'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_6B06D175E37340FA862561DE56571511 }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_915308B553C94FBFBF412CB13D89747E }}
