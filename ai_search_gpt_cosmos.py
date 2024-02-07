@@ -114,9 +114,12 @@ def create_prompt(messages,cog_result):
 
     return prompt
 
-
 @app.route('/', methods=["GET", "POST"])
 def query():
+    return render_template('login.html')
+
+@app.route('/query', methods=["GET", "POST"])
+def get_query():
 
     cog_result=''
     query = request.values.get("query")
