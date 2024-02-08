@@ -116,8 +116,8 @@ app = Flask(__name__)
 
 @app.route('/', methods=["GET", "POST"])
 def query():
-    return 'hello world'
-    # return render_template('login.html')
+    # return 'hello world'
+    return render_template('login.html')
 
 # @app.route('/query', methods=["GET", "POST"])
 # def get_query():
