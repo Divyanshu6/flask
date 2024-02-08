@@ -26,7 +26,7 @@ openai_api_key = '0ed794ff77074b52ab91380d5cd201c0'
 openai_deployment_name = 'azureOpenAI-text-embedding-ada2'
 openai_endpoint='https://azureopenaiexample.openai.azure.com/'
 connection_string = 'DefaultEndpointsProtocol=https;AccountName=cosmosdb-tableml;AccountKey=0UrxSvpklJIEpppV4oUUwnI1hNeuc07GjoOwoHDoABi6kI3kX52tosX6wN1HVmuovMYly37maDJEACDbtX1Z7Q==;TableEndpoint=https://cosmosdb-tableml.table.cosmos.azure.com:443/;'
-
+sas_token='?sv=2022-11-02&ss=bfqt&srt=sco&sp=rwdlacupiytfx&se=2024-02-08T14:07:45Z&st=2024-02-08T06:07:45Z&spr=https&sig=SS8EaYTA1j%2Fd6aIk%2F1IxQAvE5XIfwJfTmU5wHse%2B2Uc%3D'
 cog_search_credential = AzureKeyCredential('cHhqT1iPqCP91yBQaVteNXpep89iLoGFF0Vw2JZSQyAzSeBw5FIo')
 index_name='exampleindex'
 conversations=[]
@@ -111,9 +111,13 @@ def gpt_messages(role,text):
 def create_prompt(messages,cog_result):
     prompt = """
     # You are an Assistant who helps the company employees with their questions.Porvide brief answers only related to  Follow below points while answering questions.
-    1) Create your answer with the facts listed in the sources given below. If there isn't enough information below, say you don't know.
-    2) Do not generate answers that don't use the sources below.
-    3) If asking a clarifying question to the user would help, ask the question.
+    1) Create your answer with the facts listed in the sources given below.
+    2)In sepearte line include links from the source.Answer format should be like below example.
+    Example-  Answer -
+              For more info refer to this link-
+    3)If there isn't enough information below, say you don't know.
+    4) Do not generate answers that don't use the sources below.
+    5) If asking a clarifying question to the user would help, ask the question.
     Conversation history
     {}
     Below is the source.
@@ -136,12 +140,14 @@ def get_query():
     results=query_cog_search(index_name,query)
 
     for result in results:
-        cog_result+=result['content']
+        page_no=result['page_no']
+        file_name=result['file_name']+'.pdf'
+        link='https://qandastorageaccount24.blob.core.windows.net/exampledocs/'+file_name+sas_token+'#page='+page_no
+        cog_result+=result['content'] + 'Link='+link
 
     conversations=get_user_conversation(userID)
     prompt=create_prompt(conversations,cog_result)
     token_count = estimate_tokens(prompt)
-    print()
 
     while token_count > prompt_max_tokens:
         conversations.pop(0)
@@ -156,8 +162,8 @@ def get_query():
     gpt_response=completion_api(messages)
     # conversations.append({"role": 'assistant', "content": gpt_response})
     entity_create(userID,'assistant',gpt_response)
-    print(gpt_response)
-    return gpt_response
+    # print(gpt_response)
+    return '<h4><p>'+gpt_response+'</p></h4>'
 # Conversation_history("assistant",gpt_response)
 
 # @app.route('/get_query', methods=["GET", "POST"])
