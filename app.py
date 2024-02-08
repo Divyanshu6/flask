@@ -14,13 +14,20 @@ from dotenv import load_dotenv
 app = Flask(__name__)
 load_dotenv()
  
-cog_service_endpoint = os.getenv('cog_service_endpoint')
-cog_search_key = os.getenv('cog_search_key')
-openai_api_key = os.getenv('openai_api_key')
-openai_deployment_name = os.getenv('openai_deployment_name')
-openai_endpoint=os.getenv('openai_endpoint')
-connection_string =os.getenv('connection_string')
-cog_search_credential = AzureKeyCredential(cog_search_key)
+# cog_service_endpoint = os.getenv('cog_service_endpoint')
+# cog_search_key = os.getenv('cog_search_key')
+# openai_api_key = os.getenv('openai_api_key')
+# openai_deployment_name = os.getenv('openai_deployment_name')
+# openai_endpoint=os.getenv('openai_endpoint')
+# connection_string =os.getenv('connection_string')
+cog_service_endpoint = 'https://qandaaiserch.search.windows.net'
+cog_search_key = 'cHhqT1iPqCP91yBQaVteNXpep89iLoGFF0Vw2JZSQyAzSeBw5FIo'
+openai_api_key = '0ed794ff77074b52ab91380d5cd201c0'
+openai_deployment_name = 'azureOpenAI-text-embedding-ada2'
+openai_endpoint='https://azureopenaiexample.openai.azure.com/'
+connection_string = 'DefaultEndpointsProtocol=https;AccountName=cosmosdb-tableml;AccountKey=0UrxSvpklJIEpppV4oUUwnI1hNeuc07GjoOwoHDoABi6kI3kX52tosX6wN1HVmuovMYly37maDJEACDbtX1Z7Q==;TableEndpoint=https://cosmosdb-tableml.table.cosmos.azure.com:443/;'
+
+cog_search_credential = AzureKeyCredential('cHhqT1iPqCP91yBQaVteNXpep89iLoGFF0Vw2JZSQyAzSeBw5FIo')
 index_name='exampleindex'
 conversations=[]
 messages = []
