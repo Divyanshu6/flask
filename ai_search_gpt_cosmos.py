@@ -199,8 +199,8 @@ def query():
 # Conversation_history("assistant",gpt_response)
 
 
-# if __name__ == '__main__':
-#     app.run('localhost', 8000)
+if __name__ == '__main__':
+    app.run()
 
 
 
